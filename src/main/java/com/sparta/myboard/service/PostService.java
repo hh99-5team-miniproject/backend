@@ -97,13 +97,13 @@ public class PostService {
             Post post = postRepository.findById(id).orElseThrow(
                     () -> new PostCustomException(ErrorCode.POST_NOT_FOUND)
             );
-            post.update(requestDto, user);
+            post.update(requestDto);
             return new MsgResponseDto("관리자 권한으로 게시글이 수정되었습니다.");
         } else  if (postRepository.existsByIdAndUser(id, user) && userRoleEnum == UserRoleEnum.USER) {
             Post post = postRepository.findById(id).orElseThrow(
                     () -> new PostCustomException(ErrorCode.POST_NOT_FOUND)
             );
-            post.update(requestDto, user);
+            post.update(requestDto);
             return new MsgResponseDto("게시글이 수정되었습니다.");
         } else {
             throw new UserCustomException(ErrorCode.NOT_ALLOW_UPDATE);

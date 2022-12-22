@@ -66,6 +66,13 @@ public class Post extends Timestamped{
         this.youtubeUrl = requestDto.getYoutubeUrl();
     }
 
+    public void update(PostRequestDto requestDto){
+        this.title = requestDto.getTitle();
+        this.content = requestDto.getContent();
+        this.category = requestDto.getCategory();
+        this.youtubeUrl = requestDto.getYoutubeUrl();
+    }
+
     public void updateLikeCount(int likeCount){
 
         this.likeCount += likeCount;
