@@ -36,9 +36,9 @@ public class UserController {
         return userService.login(loginRequestDto, response);
     }
 
-    @DeleteMapping("/deleteUser/{loginId}")
-    public MsgResponseDto deleteUser(@PathVariable String loginId, @RequestBody DeleteUserRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
-        return userService.deleteUser(loginId, requestDto, userDetails.getUser());
+    @DeleteMapping("/deleteUser")
+    public MsgResponseDto deleteUser(@RequestBody DeleteUserRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        return userService.deleteUser(requestDto, userDetails.getUser());
     }
 
 }

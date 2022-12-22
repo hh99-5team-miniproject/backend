@@ -108,12 +108,7 @@ public class WebSecurityConfig {
 
         // 본 요청에 허용할 HTTP method(예비 요청에 대한 응답 헤더에 추가됨)
         // Access-Control-Allow-Methods
-//        config.addAllowedMethod("*");
-        config.addAllowedMethod(HttpMethod.GET.name());
-        config.addAllowedMethod(HttpMethod.HEAD.name());
-        config.addAllowedMethod(HttpMethod.POST.name());
-        config.addAllowedMethod(HttpMethod.PUT.name());
-        config.addAllowedMethod(HttpMethod.DELETE.name());
+        config.addAllowedMethod("*");
 
         // 본 요청에 허용할 HTTP header(예비 요청에 대한 응답 헤더에 추가됨)
         // Access-Control-Allow-Headers

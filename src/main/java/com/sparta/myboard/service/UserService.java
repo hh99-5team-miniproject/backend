@@ -70,18 +70,18 @@ public class UserService {
     }
 
     @Transactional
-    public MsgResponseDto deleteUser(String loginId, DeleteUserRequestDto requestDto, User user){
+    public MsgResponseDto deleteUser(DeleteUserRequestDto requestDto, User user){
         String password = requestDto.getPassword();
 
         if(!passwordEncoder.matches(password, user.getPassword())){
-            throw  new IllegalArgumentException("패스워드가 일치하지 않습니다");
+            throw new UserCustomException(ErrorCode.MISMATCH_PASSWORD);
         }
 
-        if(userRepository.existsByIdAndLoginId(user.getId(), loginId)){
+        if(userRepository.existsById(user.getId())){
             userRepository.deleteById(user.getId());
             return new MsgResponseDto("탈퇴완료");
         } else {
-            throw new IllegalArgumentException("탈퇴실패");
+            throw new UserCustomException(ErrorCode.NOT_ALLOW_WITHDRAWAL);
         }
     }
 

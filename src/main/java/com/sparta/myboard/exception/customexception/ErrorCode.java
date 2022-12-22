@@ -19,6 +19,7 @@ public enum ErrorCode {
     UNSUPPORTED_TOKEN(BAD_REQUEST.value(), "지원되지 않는 토큰입니다."),
     NOT_ALLOW_UPDATE(BAD_REQUEST.value(), "작성자만 수정할 수 있습니다."),
     NOT_ALLOW_DELETE(BAD_REQUEST.value(), "작성자만 삭제할 수 있습니다."),
+    NOT_ALLOW_WITHDRAWAL(BAD_REQUEST.value(), "회원탈퇴를 실패했습니다."),
     POST_NOT_FOUND(BAD_REQUEST.value(), "게시글을 찾을 수 없습니다"),
     COMMENT_NOT_FOUND(BAD_REQUEST.value(), "댓글을 찾을 수 없습니다");
 
