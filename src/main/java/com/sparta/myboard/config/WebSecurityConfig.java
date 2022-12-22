@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -107,7 +108,12 @@ public class WebSecurityConfig {
 
         // 본 요청에 허용할 HTTP method(예비 요청에 대한 응답 헤더에 추가됨)
         // Access-Control-Allow-Methods
-        config.addAllowedMethod("*");
+//        config.addAllowedMethod("*");
+        config.addAllowedMethod(HttpMethod.GET.name());
+        config.addAllowedMethod(HttpMethod.HEAD.name());
+        config.addAllowedMethod(HttpMethod.POST.name());
+        config.addAllowedMethod(HttpMethod.PUT.name());
+        config.addAllowedMethod(HttpMethod.DELETE.name());
 
         // 본 요청에 허용할 HTTP header(예비 요청에 대한 응답 헤더에 추가됨)
         // Access-Control-Allow-Headers
