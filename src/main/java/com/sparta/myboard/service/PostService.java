@@ -1,10 +1,7 @@
 package com.sparta.myboard.service;
 
 import com.sparta.myboard.dto.*;
-import com.sparta.myboard.entity.Comment;
-import com.sparta.myboard.entity.Post;
-import com.sparta.myboard.entity.PostLike;
-import com.sparta.myboard.entity.User;
+import com.sparta.myboard.entity.*;
 import com.sparta.myboard.exception.customexception.ErrorCode;
 import com.sparta.myboard.exception.customexception.PostCustomException;
 import com.sparta.myboard.exception.customexception.UserCustomException;
@@ -91,12 +88,22 @@ public class PostService {
     // 게시글 수정
     @Transactional
     public MsgResponseDto updatePost(Long id, PostRequestDto requestDto, User user) {
+
+        UserRoleEnum userRoleEnum = user.getRole();
+
         requestDto.embedUrl(requestDto.getYoutubeUrl());
-        if (postRepository.existsByIdAndUser(id, user)) {
+
+        if (userRoleEnum == UserRoleEnum.ADMIN){
             Post post = postRepository.findById(id).orElseThrow(
                     () -> new PostCustomException(ErrorCode.POST_NOT_FOUND)
             );
-            post.update(requestDto, user);
+            post.update(requestDto);
+            return new MsgResponseDto("관리자 권한으로 게시글이 수정되었습니다.");
+        } else  if (postRepository.existsByIdAndUser(id, user) && userRoleEnum == UserRoleEnum.USER) {
+            Post post = postRepository.findById(id).orElseThrow(
+                    () -> new PostCustomException(ErrorCode.POST_NOT_FOUND)
+            );
+            post.update(requestDto);
             return new MsgResponseDto("게시글이 수정되었습니다.");
         } else {
             throw new UserCustomException(ErrorCode.NOT_ALLOW_UPDATE);
@@ -106,7 +113,13 @@ public class PostService {
     // 게시글 삭제
     @Transactional
     public MsgResponseDto deletePost(Long postId, User user) {
-        if (postRepository.existsByIdAndUser(postId, user)){
+
+        UserRoleEnum userRoleEnum = user.getRole();
+
+        if (user.getRole().equals(UserRoleEnum.ADMIN)){
+            postRepository.deleteById(postId);
+            return new MsgResponseDto("관리자 권한으로 게시글이 삭제되었습니다.");
+        } else if (postRepository.existsByIdAndUser(postId, user) && userRoleEnum == UserRoleEnum.USER){
             postRepository.deleteById(postId);
             return new MsgResponseDto("게시글이 삭제되었습니다.");
         } else {
