@@ -6,6 +6,7 @@ import com.sparta.myboard.dto.MsgResponseDto;
 import com.sparta.myboard.entity.Comment;
 import com.sparta.myboard.entity.Post;
 import com.sparta.myboard.entity.User;
+import com.sparta.myboard.entity.UserRoleEnum;
 import com.sparta.myboard.exception.customexception.CommentCustomException;
 import com.sparta.myboard.exception.customexception.ErrorCode;
 import com.sparta.myboard.exception.customexception.PostCustomException;
@@ -52,7 +53,14 @@ public class CommentService {
     // 댓글 삭제
     @Transactional
     public MsgResponseDto deleteComment(Long commentId, User user ) {
-        if (commentRepository.existsByIdAndUser(commentId, user)){
+
+        UserRoleEnum userRoleEnum = user.getRole();
+
+        //유효한 토큰일 경우 삭제
+        if (user.getRole().equals(UserRoleEnum.ADMIN)){
+            commentRepository.deleteById(commentId);
+            return new MsgResponseDto("관리자 권한으로 댓글이 삭제되었습니다.");
+        } else if (commentRepository.existsByIdAndUser(commentId, user) && userRoleEnum == UserRoleEnum.USER){
             commentRepository.deleteById(commentId);
             return new MsgResponseDto("댓글이 삭제되었습니다.");
         } else {
